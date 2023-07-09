@@ -6,18 +6,9 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure--_(bhj9@x8)dk0#s8q13+0&njzwdto^ab3ju46z26-t_vw2@$2'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-
-
-
-# Application definition
+AUTH_USER_MODEL = 'account.User'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,6 +17,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'account.apps.AccountConfig',
+    'cafe.apps.CafeConfig'
 ]
 
 MIDDLEWARE = [

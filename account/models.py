@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .managers import UserManager
-from .tasks import change_status_notification, new_user_email_notification
 
 
 class User(AbstractUser):
@@ -100,5 +99,5 @@ class CustomerAdd(models.Model):
                 action_status = 'going_up'
             else:
                 action_status = 'going_down'
-            change_status_notification(self.user, self.status, action_status)
+            # change_status_notification(self.user, self.status, action_status)
         return self.status
