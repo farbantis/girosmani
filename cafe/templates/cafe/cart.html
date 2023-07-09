@@ -1,0 +1,154 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% load get_product_value %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+{% block jstop %}
+    <script>
+        let user = '{{ request.user }}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getToken('csrftoken');
+    </script>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+        <div class="body_cart">
+            <div class="left">
+                <div class="title_cart">Cart</div>
+                {% if request.user.is_authenticated %}
+                    {% if cart_content %}
+                        {% for item in cart_content %}
+                            <div class="cart idd{{ item.product_id }}">
+                                <div class="cart-group-one">
+                                    <div data-cart_cancel="{{ item.product.id }}" class="cart_cancel">
+                                        <img class="cart_cancel_img"
+                                             src="{% static 'cafe/images/details/cart_cancel.svg' %}" alt="cart_cancel">
+                                    </div>
+                                    <div class="cart_picture">
+                                        <img src="{{ item.product.picture.url }}" alt="product_picture">
+                                    </div>
+                                    <div class="cart_item">{{ item.product }}</div>
+                                </div>
+                                <div class="cart-group-two">
+                                    <div class="cart_item_cost">
+                                        {{ item.product.price }} x
+                                    </div>
+                                    <div class="cart_quantity">
+                                        <div data-product="{{ item.product.id }}" data-action="remove"
+                                             class="card_quantity_arrow update-cart">-
+                                        </div>
+                                        <div data-counter class="card_quantity_data">{{ item.quantity }}</div>
+                                        <div data-product="{{ item.product.id }}" data-action="add"
+                                             class="card_quantity_arrow update-cart">+
+                                        </div>
+                                    </div>
+                                    <div data-item_total class="cart_price">{{ item.get_items_cost }} uah</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div>Your cart is empty</div>
+                    {% endif %}
+
+                {% else %}
+                    {% if cart_content %}
+                        {% for item in cart_content %}
+                            <div class="cart idd{{ item.id }}">
+                                <div class="cart-group-one">
+                                    <div data-cart_cancel="{{ item.id }}" class="cart_cancel">
+                                        <img class="cart_cancel_img" alt="cart_cancel"
+                                             src="{% static 'cafe/images/details/cart_cancel.svg' %}">
+                                    </div>
+                                    <div class="cart_picture">
+                                        <img src="{{ item.picture.url }}" alt="item picture">
+                                    </div>
+                                    <div class="cart_item">{{ item.name }}</div>
+                                </div>
+                                <div class="cart-group-two">
+                                    <div class="cart_item_cost">
+                                        {{ item.price }} x
+                                    </div>
+                                    <div class="cart_quantity">
+                                        <div data-product="{{ item.id }}" data-action="remove"
+                                             class="card_quantity_arrow update-cart">-
+                                        </div>
+                                        <div data-counter class="card_quantity_data">{{ item.quantity }}</div>
+                                        <div data-product="{{ item.id }}" data-action="add"
+                                             class="card_quantity_arrow update-cart">+
+                                        </div>
+                                    </div>
+                                    <div data-item_total class="cart_price">
+                                        {{ item.item_value }} uah
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div>Your cart is empty</div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="order-delivery">
+                {% if cart_content %}
+                    <div class="right">
+                        <div class="oder">
+                            <div class="order_number">
+                                Order # {{ order.transaction_id }}
+                            </div>
+                            <div class="order_card">
+                                <div class="order_quantity">
+                                    <div class="order_quantity_title">Total:</div>
+                                    <div class="order_quantity_figure">
+                                        {{ order_value }} uah
+                                    </div>
+                                </div>
+                                {#                                <div class="order_total">#}
+                                {#                                    <div class="order_total_title">Total</div>#}
+                                {#                                    <div data-total_checkout class="order_total_figure">{{ order_value }} uah</div>#}
+                                {#                                </div>#}
+                                {% if request.user.is_authenticated %}
+                                    <button id="place_order_btn" class="order_btn btn">Checkout</button>
+                                {% else %}
+                                    <button id="login_place_order_btn" class="order_btn btn">Login to proceed</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById("#login_place_order_btn").addEventListener("click", function () {
+            window.location.href = "{% url 'account:login' %}";
+        });
+    </script>
+    <script>
+        document.getElementById("place_order_btn").addEventListener("click", function () {
+            window.location.href = "{% url 'cafe:checkout' %}";
+        });
+    </script>
+{% endblock %}
+
+{% block jscode %}
+    <script src="{% static 'cafe/js/main.js' %}"></script>
+{% endblock %}
