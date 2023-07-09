@@ -45,15 +45,15 @@
                 <div class="main-cards-row">
                     {% for item in offer %}
                         <div class="card">
-                            <a href="{% url 'cafe:product_detail' item.slug %}">
-                                <img class="card-photo-img" src="{{ item.picture.url }}" alt="card pic">
-                                <div class="card-title">
-                                    {{ item.name }}
-                                </div>
-                                <div class="card-descriptions">
-                                    {{ item.description }}
-                                </div>
-                            </a>
+{#                            <a href="{% url 'cafe:product_detail' item.slug %}">#}
+{#                                <img class="card-photo-img" src="{{ item.picture.url }}" alt="card pic">#}
+{#                                <div class="card-title">#}
+{#                                    {{ item.name }}#}
+{#                                </div>#}
+{#                                <div class="card-descriptions">#}
+{#                                    {{ item.description }}#}
+{#                                </div>#}
+{#                            </a>#}
                             <div class="card-rating">
                                 <img src="{% static 'cafe/images/details/star.svg' %}" alt="star">
                                 <img src="{% static 'cafe/images/details/star.svg' %}" alt="star">
