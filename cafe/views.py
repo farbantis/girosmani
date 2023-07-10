@@ -3,6 +3,8 @@ import math
 import braintree
 import requests
 from decimal import Decimal
+
+import weasyprint
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -319,3 +321,17 @@ class LocationView(View):
             'closest_shop': closest_shop
         }
         return render(request, 'cafe/location.html', context)
+
+
+class OrderPDF(View):
+
+    def get(self, request):
+        order_id = request.GET.get('order_id')
+        order = get_object_or_404(Order, id=order_id)
+        html = render_to_string('cafe/pdf_receipt.html', {'order': order})
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+        weasyprint.HTML(string=html).write_pdf(
+            response,
+            stylesheets=[weasyprint.CSS(str(settings.STATIC_ROOT) + '/cafe/css/pdf.css')])
+        return response

@@ -58,6 +58,36 @@ class UserLoginView(LoginView):
     template_name = 'account/user_login.html'
     form_class = UserLoginForm
 
+    def get_success_url(self):
+        if self.request.user.is_staff:
+            return '/'
+        elif json.loads(self.request.COOKIES.get('cart', '[]')):
+            return reverse_lazy('cafe:cart')
+        else:
+            return '/'
+
+    def form_valid(self, form):
+        """if user has a cart as an anonymous user we move the cart to the database"""
+        response = super().form_valid(form)
+        if self.request.user.is_authenticated:
+            cart_content = json.loads(self.request.COOKIES.get('cart', '[]'))
+            if cart_content:
+                existing_order = Order.objects.filter(customer=self.request.user, is_completed=False)
+                if existing_order:
+                    existing_order.delete()
+                order = Order.objects.create(customer=self.request.user, is_completed=False)
+                for product_id, quantity in cart_content.items():
+                    OrderItems.objects.create(
+                        order=order,
+                        product=Product.objects.get(id=int(product_id)),
+                        quantity=int(quantity))
+                response.set_cookie('cart', {})
+        return response
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid login credentials. Please try again.')
+        return super().form_invalid(form)
+
 
 class UserLogoutView(LogoutView):
     """logout user"""
