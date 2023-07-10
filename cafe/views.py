@@ -187,3 +187,40 @@ class Cart(CartActionsMixin):
             del self.cart[self.product_id]
             cart_info = self.get_cart_info_anonymous_user(cart=self.cart)
         return cart_info, self.cart
+
+
+class CheckOut(View):
+    """checkout and payment"""
+
+    def get(self, request):
+        client_token = braintree.ClientToken.generate()
+        order = Order.objects.get(customer=request.user, is_completed=False)
+        order_items = OrderItems.objects.filter(order=order)
+        context = {
+            'client_token': client_token,
+            'order': order,
+            'order_items': order_items
+        }
+        return render(request, 'cafe/checkout.html', context)
+
+    def post(self, request):
+        nonce = self.request.POST.get('payment_method_nonce')
+        amount = Decimal(self.request.POST.get('amount').replace(',', '.'))
+        result = braintree.Transaction.sale({
+            'amount': amount,
+            'payment_method_nonce': nonce,
+            'options': {
+                'submit_for_settlement': True
+            }
+        })
+
+        if result.is_success:
+            order = Order.objects.get(customer=request.user, is_completed=False)
+            order.is_completed = True
+            order.transaction_id = result.transaction.id
+            order.save()
+            #  transaction_email_notification(request.user)
+            return redirect('cafe:payment_success')
+        else:
+            # return JsonResponse({'success': False, 'message': result.message})
+            return redirect('cafe:payment_fail')
