@@ -224,3 +224,11 @@ class CheckOut(View):
         else:
             # return JsonResponse({'success': False, 'message': result.message})
             return redirect('cafe:payment_fail')
+
+
+def payment_success(request, pdf_data):
+    return render(request, 'cafe/payment_success.html', context={'pdf_data': pdf_data})
+
+
+def payment_fail(request):
+    return render(request, 'cafe/payment_fail.html')
