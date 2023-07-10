@@ -25,7 +25,7 @@ class Index(ListView):
         return queryset
 
 
-class ProductDetailView(ContextMixin, DetailView):
+class ProductDetailView(DetailView):
     """shows detals for dish including comments calories and description"""
     model = Product
     context_object_name = 'product'
