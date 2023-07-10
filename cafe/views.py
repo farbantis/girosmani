@@ -1,6 +1,7 @@
 import json
 import math
 import braintree
+import requests
 from decimal import Decimal
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -233,3 +234,88 @@ def payment_success(request, pdf_data):
 
 def payment_fail(request):
     return render(request, 'cafe/payment_fail.html')
+
+
+def apply_coupon(request):
+    data = json.loads(request.body)
+    coupon_code = data['couponCode']
+    coupon = Coupon.objects.filter(code=coupon_code)[0]
+    if coupon:
+        if coupon.is_coupon_valid:
+            coupon.owner = request.user
+            coupon.save()
+            discount = coupon.discount
+        else:
+            discount = -1
+    else:
+        discount = 0
+    return JsonResponse({"discount": discount}, safe=False)
+
+
+class ReorderView(View):
+
+    def get(self, request):
+        new_order, created = Order.objects.get_or_create(customer=request.user, is_completed=False)
+        order_id = request.GET.get('order_id')
+        order_items = OrderItems.objects.filter(order_id=order_id)
+        for item in order_items:
+            OrderItems.objects.create(order=new_order, product=item.product, quantity=item.quantity)
+        return redirect('cafe:cart')
+
+
+class LocationView(View):
+    """calculates user location based ip address and finds the nearest shop to the user"""
+
+    SHOPS = [
+        (55.95073763174729, -3.1883533021694155, 'Edinburgh, unknown street 246'),
+        (50.858996045327125, 4.365800266413261, 'Brussel, unknown street 246'),
+        (52.43156626600185, -1.9309518016162073, 'Birminham, unknown street 246'),
+        (52.21650624286724, 21.03417408205453, 'Warssaw, unknown street 246')
+    ]
+
+    @staticmethod
+    def deg2rad(deg):
+        return deg * (math.pi / 180)
+
+    def get_distance(self, lat_1, lon_1, lat_2, lon_2):
+        R = 6371
+        d_lat = self.deg2rad(lat_2 - lat_1)
+        d_lon = self.deg2rad(lon_2 - lon_1)
+        a = math.sin(d_lat / 2) * math.sin(d_lat / 2) + math.cos(self.deg2rad(lat_1)) * math.cos(self.deg2rad(lat_2)) * \
+            math.sin(d_lon / 2) * math.sin(d_lon / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        d = R * c  # Distance in km
+        return d
+
+    def get_visitor_ip_address(self):
+        req_headers = self.request.META
+        x_forwarded_for_value = req_headers.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for_value:
+            ip_addr = x_forwarded_for_value.split(',')[-1].strip()
+        else:
+            ip_addr = req_headers.get('REMOTE_ADDR')
+        return ip_addr
+
+    @staticmethod
+    def get_lat_lon(visitor_ip_address):
+        user_location_data = requests.get(f'http://ip-api.com/json/{visitor_ip_address}')  # 191.96.53.71
+        user_location_data = user_location_data.json()
+        return user_location_data
+
+    def get(self, request):
+        visitor_ip_address = self.get_visitor_ip_address()
+        user_location_data = self.get_lat_lon(visitor_ip_address)
+        lat, lon = user_location_data.get('lat', 0), user_location_data.get('lon', 0)
+        if lat and lon:
+            distances = [self.get_distance(lat, lon, x[0], x[1]) for x in self.SHOPS]
+            closest_shop_distance = min(distances)
+            closest_shop_index = distances.index(closest_shop_distance)
+            closest_shop = self.SHOPS[closest_shop_index]
+        else:
+            closest_shop = 'no data'
+        context = {
+            'visitor_ip_address': visitor_ip_address,
+            'user_location_data': user_location_data,
+            'closest_shop': closest_shop
+        }
+        return render(request, 'cafe/location.html', context)

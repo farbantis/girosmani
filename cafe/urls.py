@@ -1,5 +1,6 @@
 from django.urls import path
-from cafe.views import Index, ProductDetailView, delivery_terms, CartView, CheckOut, payment_success, payment_fail
+from cafe.views import Index, ProductDetailView, delivery_terms, CartView, CheckOut, payment_success, payment_fail, \
+    apply_coupon, ReorderView, LocationView
 
 app_name = 'cafe'
 
@@ -11,5 +12,9 @@ urlpatterns = [
     path('cafe/payment_fail/', payment_fail, name='payment_fail'),
     path('product/<slug:slug>/', ProductDetailView.as_view(), name='product_detail'),
     path('delivery_terms/', delivery_terms, name='delivery_terms'),
+    path('cafe/recreate-order/', ReorderView.as_view(), name='reorder'),
+    path('cafe/location/', LocationView.as_view(), name='location'),
+    path('cafe/apply_coupon/', apply_coupon, name='apply_coupon'),
+    path('cafe/<str:group>/', Index.as_view(), name='main_page'),
     path('', Index.as_view(), name='main_page'),
 ]
