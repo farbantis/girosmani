@@ -1,10 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'cafe/base.html' %}
 
-</body>
-</html>
+{% block title %}
+    Account
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+    <ul>
+        <li>
+            <a href="{% url 'account:order_history' %}">Order history</a>
+        </li>
+        <li>
+            <a href="{% url 'account:user_edit' user.id %}">Change personal data</a>
+        </li>
+        <li>
+            <a href="{% url 'account:logout' %}">Log out</a>
+        </li>
+    </ul>
+{#    <p><a href="{% url 'account:order_history' %}">Order history</a></p>#}
+{#    <p><a href="{% url 'account:user_edit' user.id %}">Change personal data</a></p>#}
+{#    <p><a href="{% url 'account:password_change' %}">Изменить пароль</a></p>#}
+{#    <p><a href="{% url 'account:logout' %}">Log out</a></p>#}
+    </div>
+
+{% endblock %}

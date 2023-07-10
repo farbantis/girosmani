@@ -11,7 +11,7 @@ from .mixins import ContextMixin
 from .models import Product, Order, OrderItems, Coupon
 
 
-class Index(ContextMixin, ListView):
+class Index(ListView):
     """shows the index page with dishes"""
     template_name = 'cafe/index.html'
     context_object_name = 'offer'
@@ -23,3 +23,15 @@ class Index(ContextMixin, ListView):
         else:
             queryset = Product.objects.all()
         return queryset
+
+
+class ProductDetailView(ContextMixin, DetailView):
+    """shows detals for dish including comments calories and description"""
+    model = Product
+    context_object_name = 'product'
+    template_name = 'cafe/product_detail.html'
+
+
+def delivery_terms(request):
+    return render(request, 'cafe/delivery_terms.html')
+

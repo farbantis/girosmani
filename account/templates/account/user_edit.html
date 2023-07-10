@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'cafe/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}
+    edit user info
+{% endblock %}
+
+{% block main_content %}
+        <div class="container">
+        {% if form.errors %}
+            <p> {{ form.errors }} {{ form.has_error }} {{ form.non_field_errors }} </p>
+        {% endif %}
+        <div class="row_login">
+            <div class="login_picture login_align">
+                <img class="login_picture_inner" src="{% static 'account/images/details/register/person.svg' %}" alt="img">
+            </div>
+            <div class="login_title">
+                Change personal details
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="login_username login_align">
+                    {{ form.first_name }}
+                </div>
+                <div class="login_username login_align">
+                    {{ form.last_name }}
+                </div>
+                <div class="login_username login_align">
+                    {{ customer_add_form.birth_date }}
+                </div>
+                <div class="login_btn">
+                    <button class="login_btn_inner" type="submit">CHANGE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
