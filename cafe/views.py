@@ -1,5 +1,6 @@
 import json
 import math
+import braintree
 from decimal import Decimal
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,7 +12,7 @@ from .mixins import ContextMixin, CartActionsMixin
 from .models import Product, Order, OrderItems, Coupon
 
 
-class Index(ListView):
+class Index(ContextMixin, ListView):
     """shows the index page with dishes"""
     template_name = 'cafe/index.html'
     context_object_name = 'offer'
@@ -25,7 +26,7 @@ class Index(ListView):
         return queryset
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(ContextMixin, DetailView):
     """shows detals for dish including comments calories and description"""
     model = Product
     context_object_name = 'product'

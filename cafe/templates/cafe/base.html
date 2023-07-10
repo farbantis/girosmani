@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'cafe/css/main.css' %}">
     {% block jstop %}
     {% endblock %}
-{#    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
@@ -21,14 +21,14 @@
     <div class="container">
         <div class="header_row">
             <div class="h_first_logo">
-{#                <a href="{% url 'cafe:main_page' %}"><img class="h_img"#}
-{#                                                          src="{% static 'cafe/images/details/h_first_logo1.jpg' %}"#}
-{#                                                          alt="cafe"></a>#}
+                <a href="{% url 'cafe:main_page' %}"><img class="h_img"
+                                                          src="{% static 'cafe/images/details/h_first_logo1.jpg' %}"
+                                                          alt="cafe"></a>
             </div>
             <div class="h_second_logo">
-{#                <a href="{% url 'cafe:main_page' %}"><img class="h_img"#}
-{#                                                          src="{% static 'cafe/images/details/h_second_logo1.jpg' %}"#}
-{#                                                          alt="cafe"></a>#}
+                <a href="{% url 'cafe:main_page' %}"><img class="h_img"
+                                                          src="{% static 'cafe/images/details/h_second_logo1.jpg' %}"
+                                                          alt="cafe"></a>
             </div>
             <div class="h_gap_1"></div>
             <nav class="h_menu">
@@ -38,16 +38,16 @@
                             <button class="dropbtn">Menu</button>
                             <div class="dropdown-content">
 
-{#                                {% for item in main_menu %}#}
-{#                                    <a href="{% url 'cafe:main_page' group=item.id %}"><img class="dropdown-img"#}
-{#                                                                                            src="{{ item.picture.url }}"#}
-{#                                                                                            alt="pic">{{ item }}</a>#}
-{#                                {% endfor %}#}
+                                {% for item in main_menu %}
+                                    <a href="{% url 'cafe:main_page' group=item.id %}"><img class="dropdown-img"
+                                                                                            src="{{ item.picture.url }}"
+                                                                                            alt="pic">{{ item }}</a>
+                                {% endfor %}
 
                             </div>
                         </div>
                     </li>
-{#                    <li class="disappear"><a href="{% url 'cafe:delivery_terms' %}">Project Details</a></li>#}
+                    <li class="disappear"><a href="{% url 'cafe:delivery_terms' %}">Project Details</a></li>
 {#                    <li class="disappear"><a href="{% url 'cafe:location' %}">Location</a></li>#}
                     <li class="disappear"><a href="#">Booking</a></li>
                 </ul>
