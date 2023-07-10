@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+import braintree
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -18,7 +20,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'account.apps.AccountConfig',
-    'cafe.apps.CafeConfig'
+    'cafe.apps.CafeConfig',
+    'braintree',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -44,6 +48,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cafe.middlewares.menu_context_processor',
             ],
         },
     },
@@ -93,3 +98,33 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CART_COOKIE_NAME = 'cart'
+
+BRAINTREE_MERCHANT_ID = os.getenv('BRAINTREE_MERCHANT_ID')
+BRAINTREE_PUBLIC_KEY = os.getenv('BRAINTREE_PUBLIC_KEY')
+BRAINTREE_PRIVATE_KEY = os.getenv('BRAINTREE_PRIVATE_KEY')
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=BRAINTREE_MERCHANT_ID,
+        public_key=BRAINTREE_PUBLIC_KEY,
+        private_key=BRAINTREE_PRIVATE_KEY
+    )
+)
+
+braintree.Configuration.configure(
+    braintree.Environment.Sandbox,
+    merchant_id=BRAINTREE_MERCHANT_ID,
+    public_key=BRAINTREE_PUBLIC_KEY,
+    private_key=BRAINTREE_PRIVATE_KEY,
+)
+
+BRAINTREE = {
+    'environment': 'sandbox',
+    'merchant_id': BRAINTREE_MERCHANT_ID,
+    'public_key': BRAINTREE_PUBLIC_KEY,
+    'private_key': BRAINTREE_PRIVATE_KEY,
+    'use_ssl': False,
+}
