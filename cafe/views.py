@@ -3,7 +3,6 @@ import math
 import braintree
 import requests
 from decimal import Decimal
-
 import weasyprint
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -224,18 +223,33 @@ class CheckOut(View):
             order.transaction_id = result.transaction.id
             order.save()
             #  transaction_email_notification(request.user)
-            return redirect('cafe:payment_success')
+            return redirect('cafe:payment_success', order_id=order.id)
         else:
             # return JsonResponse({'success': False, 'message': result.message})
             return redirect('cafe:payment_fail')
 
 
-def payment_success(request, pdf_data):
-    return render(request, 'cafe/payment_success.html', context={'pdf_data': pdf_data})
+def payment_success(request, order_id):
+    context = {'order_id': order_id}
+    return render(request, 'cafe/payment_success.html', context)
 
 
 def payment_fail(request):
     return render(request, 'cafe/payment_fail.html')
+
+
+class OrderPDF(View):
+
+    def get(self, request):
+        order_id = request.GET.get('order_id')
+        order = get_object_or_404(Order, id=order_id)
+        html = render_to_string('cafe/pdf_receipt.html', {'order': order})
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+        weasyprint.HTML(string=html).write_pdf(
+            response,
+            stylesheets=[weasyprint.CSS(str(settings.STATIC_ROOT) + '/cafe/css/pdf.css')])
+        return response
 
 
 def apply_coupon(request):
@@ -323,15 +337,4 @@ class LocationView(View):
         return render(request, 'cafe/location.html', context)
 
 
-class OrderPDF(View):
 
-    def get(self, request):
-        order_id = request.GET.get('order_id')
-        order = get_object_or_404(Order, id=order_id)
-        html = render_to_string('cafe/pdf_receipt.html', {'order': order})
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
-        weasyprint.HTML(string=html).write_pdf(
-            response,
-            stylesheets=[weasyprint.CSS(str(settings.STATIC_ROOT) + '/cafe/css/pdf.css')])
-        return response

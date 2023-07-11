@@ -16,6 +16,6 @@ urlpatterns = [
     path('cafe/location/', LocationView.as_view(), name='location'),
     path('cafe/apply_coupon/', apply_coupon, name='apply_coupon'),
     path('cafe/<str:group>/', Index.as_view(), name='main_page'),
-    path('cafe/order_pdf/', OrderPDF.as_view(), name='order_pdf'),
+    path('cafe/order/pdf/<int:order_id>/', OrderPDF.as_view(), name='order_pdf'),
     path('', Index.as_view(), name='main_page'),
 ]
