@@ -230,12 +230,21 @@ class CheckOut(View):
 
 
 def payment_success(request, order_id):
-    context = {'order_id': order_id}
+    context = {'order_id': int(order_id)}
     return render(request, 'cafe/payment_success.html', context)
 
 
 def payment_fail(request):
     return render(request, 'cafe/payment_fail.html')
+
+
+def get_pdf_receipt(self, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    html = render_to_string('cafe/pdf_receipt.html', {'order': order})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=order_{order.id}.pdf'
+    weasyprint.HTML(string=html).write_pdf(response)
+    return response
 
 
 class OrderPDF(View):

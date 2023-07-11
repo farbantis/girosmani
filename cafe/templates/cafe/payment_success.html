@@ -1,6 +1,6 @@
 {% extends 'cafe/base.html' %}
 
-{% block main_contentdelivery %}
+{% block main_content %}
     <h2 class="container">Your payment was successful</h2>
     <div>you will be redirected to the main page</div>
     <div></div>
@@ -10,6 +10,12 @@
         }, 5000);
     </script>
     <script>
-        window.open("{% url 'cafe:order_pdf' order_id=order_id %}", "_blank");
+        window.open("{% url 'cafe:order_pdf' order_id=3 %}", "_blank");
+        var link = document.createElement('a');
+        link.href = "{% url 'cafe:order_pdf' order_id=order_id %}";
+        link.target = '_blank'; // Optional: To open in a new tab if the download doesn't work
+        link.download = 'order.pdf'; // Specify the filename for the downloaded file
+        // Trigger a click event on the link
+        link.click();
     </script>
 {% endblock %}
