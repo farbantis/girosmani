@@ -7,6 +7,7 @@
 *.pyc
 *.jpg
 
+venvgirosmani/
 
 __pycache__/
 local_settings.py
