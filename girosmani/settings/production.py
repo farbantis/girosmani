@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '191.96.53.71', 'www.qimeer.online', 'qimeer.online', '.qimeer.online']
 
