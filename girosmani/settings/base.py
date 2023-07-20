@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'braintree',
     'storages',
     'import_export',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,6 @@ BRAINTREE = {
 
 # django-import-export settings
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# API token kill after
+FORCE_KILL_TOKEN = 6_000_000
