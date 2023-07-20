@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
-from cafe.api.serializers import MenuListSerializer, OrderSerializer, OrderItemsSerializer
-from cafe.models import Product, Order, OrderItems
+from cafe.api.serializers import MenuListSerializer, OrderSerializer, OrderItemsSerializer, HeaderMenuSerializer
+from cafe.models import Product, Order, OrderItems, Menu
 
 
 class MenuListAPIView(ListAPIView):
@@ -10,10 +10,15 @@ class MenuListAPIView(ListAPIView):
 
     def get_queryset(self):
         qs = super(MenuListAPIView, self).get_queryset()
-        id = self.kwargs.get('id')
-        if id is not None:
-            qs.filter(group=id)
+        group = self.kwargs.get('group')
+        if group is not None:
+            qs = Product.objects.filter(group__name=group)
         return qs
+
+
+class HeaderMenuAPIView(ListAPIView):
+    serializer_class = HeaderMenuSerializer
+    queryset = Menu.objects.all()
 
 
 class OrderAPIVIewSet(viewsets.ModelViewSet):

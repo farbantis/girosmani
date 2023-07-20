@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from cafe.models import Product, OrderItems, Order
+from cafe.models import Product, OrderItems, Order, Menu
 
 
 class MenuListSerializer(serializers.ModelSerializer):
@@ -10,7 +10,14 @@ class MenuListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'description', 'price', 'weight', 'picture', 'group')
 
     def get_group(self, object):
+        print(f'group in serializer is {object.group.name}')
         return object.group.name
+
+
+class HeaderMenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ('name', 'picture')
 
 
 class OrderItemsSerializer(serializers.ModelSerializer):

@@ -9,6 +9,6 @@ urlpatterns = router.urls
 
 urlpatterns += [
     path('menu/', MenuListAPIView.as_view()),
-    path('menu/<int:id>/', MenuListAPIView.as_view()),
+    path('menu/<slug:group>/', MenuListAPIView.as_view()),
     # path('order/', OrderAPIVIew.as_view().as_view()),
 ]
