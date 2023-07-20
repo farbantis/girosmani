@@ -1,8 +1,10 @@
 from django.contrib import admin
 from .models import Product, Menu, Order, OrderItems, Coupon
+from import_export.admin import ImportExportModelAdmin
 
 
-class ProductAdmin(admin.ModelAdmin):
+@admin.register(Product)
+class ProductAdmin(ImportExportModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
 
 
@@ -18,6 +20,6 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Menu)
-admin.site.register(Product, ProductAdmin)
+# admin.site.register(Product, ProductAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Coupon)

@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'cafe.apps.CafeConfig',
     'braintree',
     'storages',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,6 @@ BRAINTREE = {
     'private_key': BRAINTREE_PRIVATE_KEY,
     'use_ssl': False,
 }
+
+# django-import-export settings
+IMPORT_EXPORT_USE_TRANSACTIONS = True
