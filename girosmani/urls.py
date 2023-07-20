@@ -9,7 +9,7 @@ urlpatterns = [
     path('auth/', include('account.urls')),
     path('cafe/', include('cafe.urls')),
     path('api/account/', include('account.api.urls')),
-    # path('api/cafe/', include('cafe.api.urls')),
+    path('api/cafe/', include('cafe.api.urls')),
 ]
 
 if settings.DEBUG:
