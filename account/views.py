@@ -25,7 +25,7 @@ class OrderHistoryView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         contex_data = super(OrderHistoryView, self).get_context_data(**kwargs)
-        user_orders = Order.objects.filter(customer=self.request.user)
+        user_orders = Order.objects.filter(customer=self.request.user).order_by('-date_ordered')
         # user_order_items = OrderItems.objects.filter(order__customer=self.request.user)
         # contex_data['user_order_items'] = user_order_items
         contex_data['user_orders'] = user_orders
@@ -33,7 +33,7 @@ class OrderHistoryView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         query_set = super(OrderHistoryView, self).get_queryset()
-        return query_set.order_by('-date_ordered')
+        return query_set
 
 
 class RegisterUserView(CreateView):

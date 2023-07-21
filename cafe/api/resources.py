@@ -26,10 +26,6 @@ class UserOrdersAPIView(ListAPIView):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        print('checking')
-        print(f'user id is {self.request.user.id}')
-        print(f'user is {self.request.user}')
-        print(f'further {self.request.user}')
         return super().get_queryset().filter(customer=self.request.user.id)
 
 
