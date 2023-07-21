@@ -21,6 +21,18 @@ class HeaderMenuAPIView(ListAPIView):
     queryset = Menu.objects.all()
 
 
+class UserOrdersAPIView(ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        print('checking')
+        print(f'user id is {self.request.user.id}')
+        print(f'user is {self.request.user}')
+        print(f'further {self.request.user}')
+        return super().get_queryset().filter(customer=self.request.user.id)
+
+
 class OrderAPIVIewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
