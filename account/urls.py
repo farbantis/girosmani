@@ -1,4 +1,6 @@
 from django.urls import path
+
+from account.tasks import new_user_email_notification
 from account.views import RegisterUserView, UserLoginView, UserLogoutView, \
     ChangeUserDetailsView, OrderHistoryView, DashboardView
 
@@ -11,6 +13,7 @@ urlpatterns = [
     path('user_edit/<int:pk>/', ChangeUserDetailsView.as_view(), name='user_edit'),
     path('user_dashboard/', DashboardView.as_view(), name='user_dashboard'),
     path('order_history/', OrderHistoryView.as_view(), name='order_history'),
+    path('registration_confirmation_email/', new_user_email_notification, name='email_notification')
     # path('password_change/', UserPasswordChangeView.as_view(), name='password_change'),
 ]
 

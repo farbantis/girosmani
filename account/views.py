@@ -50,7 +50,6 @@ class RegisterUserView(CreateView):
             new_user.save()
             messages.add_message(request, messages.SUCCESS, f'user was created')
             new_user_email_notification.delay(new_user.username)
-            print(f'new user username is {new_user.username}')
             return redirect('account:login')
         else:
             messages.add_message(request, messages.ERROR, f'check input data')

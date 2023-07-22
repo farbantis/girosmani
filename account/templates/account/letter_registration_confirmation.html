@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to {{ cafe_name }}</title>
+    <style>
+        /* Add your CSS styles here */
+        /* For example: */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to {{ cafe_name }}</h1>
+        </div>
+        <div class="content">
+            <p>Dear {{ username }},</p>
+            <p>Thank you for registering with {{ cafe_name }}! We are excited to have you on board.</p>
+            <p>To get started, you can now place your first order by clicking the button below:</p>
+            <p>
+                <a href="{{ order_url }}" class="cta-button">Place Your First Order</a>
+            </p>
+            <p>If you have any questions or need assistance, feel free to contact our support team.</p>
+            <p>Best regards,<br>{{ cafe_name }} Team</p>
+        </div>
+    </div>
+</body>
+</html>
