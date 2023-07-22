@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'import_export',
     'rest_framework',
     'rest_framework.authtoken',
+    'celery',
 ]
 
 MIDDLEWARE = [
@@ -158,5 +159,5 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 # API token kill after
 FORCE_KILL_TOKEN = 6_000_000
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Use Redis on the local machine
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # Use Redis on the local machine
+
+
