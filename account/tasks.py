@@ -10,8 +10,9 @@ def new_user_email_notification(user):
     message = f"""
         Dear {email},
         you successfully registered with pirosmani
-        your status is {user.status}
+        your status is bronze
     """
+    # {user.status} is no available here?.
     from_email = os.getenv('EMAIL_HOST_USER')
-    recipient_list = [email]
+    recipient_list = ['yalisanda@gmail.com']
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
