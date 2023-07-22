@@ -12,6 +12,6 @@ urlpatterns += [
     path('menu/', MenuListAPIView.as_view()),
     path('menu/<slug:group>/', MenuListAPIView.as_view()),
     path('header_menu/', HeaderMenuAPIView.as_view()),
-    path('orders/', UserOrdersAPIView.as_view())
-    # path('order/', OrderAPIVIew.as_view().as_view()),
+    path('orders/', UserOrdersAPIView.as_view()),
+    # path('order/', OrderAPIVIewSet.as_view()),
 ]
