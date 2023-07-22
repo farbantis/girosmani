@@ -10,6 +10,7 @@ from django.views.generic import CreateView, UpdateView, ListView
 from cafe.models import Order, OrderItems, Product
 from .forms import UserRegistrationForm, UserLoginForm, UserEditForm, CustomerAddEditForm
 from .models import Customer, User
+from .tasks import new_user_email_notification
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -48,6 +49,8 @@ class RegisterUserView(CreateView):
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
             messages.add_message(request, messages.SUCCESS, f'user was created')
+            new_user_email_notification(new_user.username)
+            print(f'new user username is {new_user.username}')
             return redirect('account:login')
         else:
             messages.add_message(request, messages.ERROR, f'check input data')
