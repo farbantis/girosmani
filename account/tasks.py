@@ -39,6 +39,7 @@ def new_user_email_notification(user):
     message = 'ordinary email' + html_content + subject
     send_mail(
         subject=subject,
+        message='hello message',
         html_message=html_content,
         from_email=from_email,
         recipient_list=[recipient_email],
