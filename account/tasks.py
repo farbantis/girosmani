@@ -5,11 +5,10 @@ from django.template.loader import render_to_string
 
 
 @shared_task(expires=3600)
-def new_user_email_notification(user):
-    print(f'confirming user{user}')
+def new_user_email_notification(new_user):
     recipient_email = 'yalisanda@gmail.com'
     context = {
-        'username': user,
+        'username': new_user,
         'cafe_name': 'Girosmani Cafe',
         'order_url': 'https://qimeer.online/cafe/',
     }
