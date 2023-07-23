@@ -5,6 +5,7 @@ from cafe.views import Index, ProductDetailView, delivery_terms, CartView, Check
 app_name = 'cafe'
 
 urlpatterns = [
+    path('', Index.as_view(), name='main_page'),
     path('cart/', CartView.as_view(), name='cart'),
     path('update-cart/', CartView.as_view(), name='update-cart'),
     path('cafe/checkout/', CheckOut.as_view(), name='checkout'),
@@ -15,7 +16,7 @@ urlpatterns = [
     path('cafe/recreate-order/', ReorderView.as_view(), name='reorder'),
     path('cafe/location/', LocationView.as_view(), name='location'),
     path('cafe/apply_coupon/', apply_coupon, name='apply_coupon'),
-    path('<str:group>/', Index.as_view(), name='main_page'),
     path('cafe/order/pdf/<order_id>/', get_pdf_receipt, name='order_pdf'),
+    path('<str:group>/', Index.as_view(), name='main_page'),
     # path('', Index.as_view(), name='main_page'),
 ]
