@@ -18,5 +18,4 @@ urlpatterns = [
     path('cafe/apply_coupon/', apply_coupon, name='apply_coupon'),
     path('cafe/order/pdf/<order_id>/', get_pdf_receipt, name='order_pdf'),
     path('<str:group>/', Index.as_view(), name='main_page'),
-    # path('', Index.as_view(), name='main_page'),
 ]
