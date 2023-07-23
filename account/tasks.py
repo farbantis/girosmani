@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 
 @shared_task(expires=3600)
 def new_user_email_notification(user):
+    print(f'confirming user{user}')
     recipient_email = 'yalisanda@gmail.com'
     context = {
         'username': user,
