@@ -35,3 +35,7 @@ def new_user_email_notification(user):
     email = EmailMultiAlternatives(subject, from_email, [recipient_email])
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+    message = 'ordinary email' + html_content + subject
+    send_mail(subject, message, from_email, recipient_email, fail_silently=False)
+
