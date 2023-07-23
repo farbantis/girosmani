@@ -10,7 +10,7 @@ def new_user_email_notification(new_user):
     context = {
         'username': new_user,
         'cafe_name': 'Girosmani Cafe',
-        'order_url': 'https://qimeer.online/cafe/',
+        'order_url': 'https://qimeer.online/',
     }
     html_content = render_to_string('account/letter_registration_confirmation.html', context)
     from_email = os.getenv('EMAIL_HOST_USER')
