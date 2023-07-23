@@ -15,7 +15,7 @@ urlpatterns = [
     path('cafe/recreate-order/', ReorderView.as_view(), name='reorder'),
     path('cafe/location/', LocationView.as_view(), name='location'),
     path('cafe/apply_coupon/', apply_coupon, name='apply_coupon'),
-    path('cafe/<str:group>/', Index.as_view(), name='main_page'),
+    path('<str:group>/', Index.as_view(), name='main_page'),
     path('cafe/order/pdf/<order_id>/', get_pdf_receipt, name='order_pdf'),
-    path('', Index.as_view(), name='main_page'),
+    # path('', Index.as_view(), name='main_page'),
 ]

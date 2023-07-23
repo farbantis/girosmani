@@ -9,7 +9,7 @@ urlpatterns = [
     path('auth/', include('account.urls')),
     path('api/account/', include('account.api.urls')),
     path('api/cafe/', include('cafe.api.urls')),
-    path('', include('cafe.urls')), # issue here ? cors
+    path('', include('cafe.urls')),
 ]
 
 if settings.DEBUG:
