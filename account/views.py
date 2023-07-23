@@ -49,7 +49,7 @@ class RegisterUserView(CreateView):
             new_user.set_password(form.cleaned_data['password'])
             new_user.save()
             messages.add_message(request, messages.SUCCESS, f'user was created')
-            new_user_email_notification.delay(new_user)
+            new_user_email_notification.delay(new_user.email)
             return redirect('account:login')
         else:
             messages.add_message(request, messages.ERROR, f'check input data')
