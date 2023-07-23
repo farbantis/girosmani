@@ -9,7 +9,7 @@ for (let i=0; i < addToCartBtn1.length; i++) {
 }
 
 function updateScreen(productId, action) {
-    let url = '/cafe/update-cart/';
+    let url = '/update-cart/';
     fetch(url, {
         method: 'POST',
         headers: {
