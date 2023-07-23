@@ -23,7 +23,7 @@ for (let i=0; i < addToCartBtn.length; i++) {
 }
 
 function updateCart(productId, action, neededDiv) {
-    let url = '/cafe/update-cart/';
+    let url = '/update-cart/';
     fetch(url, {
         method: 'POST',
         headers: {
