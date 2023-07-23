@@ -799,7 +799,6 @@ header {
 }
 
 .detail_main__picture {
-    width: 645px;
     margin-bottom: 60px;
 }
 
@@ -846,11 +845,13 @@ header {
 }
 
 .detail_side {
-    width: 311px;
+
 }
 
 .detail_oder {
     height: 426px;
+    width: 311px;
+    margin: 0 auto;
 }
 
 .detail_card {
@@ -1267,6 +1268,9 @@ input:focus {
 @media (max-width: 780px) {
     .h_phone {
         display: none;
+    }
+    .main-row-top {
+        display: block;
     }
 }
 
