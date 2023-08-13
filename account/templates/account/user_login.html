@@ -13,9 +13,9 @@
             </div>
             <div class="messages-log">
                 {% if messages %}
-                        {% for message in messages %}
-                            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-                        {% endfor %}
+                    {% for message in messages %}
+                        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                    {% endfor %}
                 {% endif %}
             </div>
             <form method="post">
@@ -24,20 +24,32 @@
                     {{ form.username.errors }}
                     {{ form.username }}
                 </div>
-                <div class="login_password login_align">
+                <div class="password login_password login_align">
                     {{ form.password }}
                 </div>
-                <div class="login_forgot login_align">
-                    <a class="login_forgot_inner" href="#">forgot password</a>
+                <div class="login_align">
+                    <input class="check" type="checkbox">Show password
                 </div>
                 <div class="login_btn">
                     <button class="login_btn_inner" type="submit">LOGIN</button>
                 </div>
             </form>
+            <div class="login_forgot login_align">
+                <a class="login_forgot_inner" href="#">forgot password</a>
+            </div>
             <div class="login_register login_align">
                 First visit? &nbsp <a href="{% url 'account:register' %}" class="login_register_inner"> Register</a>
             </div>
         </div>
     </div>
+
+    <script>
+        const password = document.querySelector(".password").querySelector("input[type='password']");
+        const check = document.querySelector(".check")
+        check.addEventListener('change', function (e) {
+            console.log('changing');
+            password.type = check.checked ? "text" : "password";
+        });
+    </script>
 
 {% endblock %}

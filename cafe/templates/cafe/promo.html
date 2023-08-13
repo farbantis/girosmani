@@ -1,22 +1,26 @@
 {% load static %}
 
-<div class="container container-promo">
-<div class="promo-row">
-  <div class="promo-text">
-    <div class="promo-text-title">
-      Gift with the first order.
+{% if not request.user.is_authenticated %}
+    <div class="container container-promo">
+        <div class="promo-row">
+            <div class="promo-text">
+                <div class="promo-text-title">
+                    Gift with the first order.
+                </div>
+                <div class="promo-text-content">
+                    <p>
+                        Subscribe and get 200uah
+                    </p>
+                </div>
+                <a href="{% url 'account:register' %}">
+                    <button class="promo-text-btn btn">
+                        Subscribe
+                    </button>
+                </a>
+            </div>
+            <div class="promo-img">
+                <img src="{% static 'cafe/images/details/promo_img.jpg' %}">
+            </div>
+        </div>
     </div>
-    <div class="promo-text-content">
-      <p>
-        Subscribe and get 200uah
-      </p>
-    </div>
-    <button class="promo-text-btn">
-      Subscribe
-    </button>
-  </div>
-  <div class="promo-img">
-    <img src="{% static 'cafe/images/details/promo_img.jpg' %}">
-  </div>
-</div>
-</div>
+{% endif %}

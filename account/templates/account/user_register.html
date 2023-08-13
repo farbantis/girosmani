@@ -27,8 +27,19 @@
                 <div class="login_password login_align">
                     {{ form.password }}
                 </div>
-                <div class="login_password login_align">
+                <div class="login_password login_align pass1">
                     {{ form.password1 }}
+                </div>
+                <div class="login_align">
+                    <label><input class="show-password-check" type="checkbox">Show password</label>
+                </div>
+                <div class="password-reminder">
+                    <ul>password must
+                        <li class="pass-length">be at least 7 characters long</li>
+                        <li class="pass-capital">contain at least 1 capital letter</li>
+                        <li class="pass-figure">contain at least 1 figure</li>
+                        <li class="pass-sign">contain at least one sign ";!@#$%^&*()</li>
+                    </ul>
                 </div>
                 <div class="login_btn">
                     <button class="login_btn_inner" type="submit">REGISTER</button>
@@ -36,6 +47,56 @@
             </form>
         </div>
     </div>
+    <script>
+        const password1 = document.querySelector("#id_password");
+        const passLength = document.querySelector(".pass-length");
+        const passCapital = document.querySelector(".pass-capital");
+        const passFigure = document.querySelector(".pass-figure");
+        const passSign = document.querySelector(".pass-sign");
+
+        password1.addEventListener('input', function () {
+            const value = password1.value;
+            passLength.style.color = value.length >= 7 ? 'green' : 'red';
+            passCapital.style.color = /[A-Z]/.test(value) ? 'green' : 'red';
+            passFigure.style.color = /\d/.test(value) ? 'green' : 'red';
+            passSign.style.color = /[;!@#$%^&*()]/.test(value) ? 'green' : 'red';
+        });
+    </script>
+
+<script>
+    const passwordFields = document.querySelectorAll(".login_password input[type='password']");
+    const showPasswordCheck = document.querySelector(".show-password-check");
+    const form = document.querySelector("form");
+    const pass1 = document.querySelector(".pass1")
+
+    showPasswordCheck.addEventListener('change', function () {
+        const showPassword = showPasswordCheck.checked;
+
+        passwordFields.forEach(field => {
+            field.type = showPassword ? "text" : "password";
+        });
+
+        // If showPassword is checked, hide the confirm password field and set its value to the first password field
+        if (showPassword) {
+            const passwordValue = passwordFields[0].value;
+            pass1.style = "display:none"
+            passwordFields[1].value = passwordValue;
+        } else {
+            passwordFields[1].type = "password";
+            pass1.style = "display:block"
+        }
+    });
+
+    form.addEventListener('submit', function (e) {
+        // If showPassword is checked, reset the confirm password field type before submitting the form
+        if (showPasswordCheck.checked) {
+            passwordFields[1].type = "password";
+        }
+    });
+</script>
+
+
+
 
 {% endblock %}
 
