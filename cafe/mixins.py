@@ -20,5 +20,7 @@ class ContextMixin:
 
 class CartActionsMixin:
     def get_cookie_cart_content(self):
+        # cart_data = self.request.execute_script("return JSON.parse(localStorage.getItem('cart')) || {}")
+        # print(f'cart data is {cart_data}')
         return json.loads(self.request.COOKIES.get('cart', '{}'))
 

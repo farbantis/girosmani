@@ -4,36 +4,11 @@ for (let i = 0; i < addToCartBtn1.length; i++) {
     addToCartBtn1[i].addEventListener('click', function () {
         const productId = this.dataset.product;
         const action = 'add';
-        const needed_div = addToCartBtn1[i]
-        updateScreen(productId, action, needed_div);
+        updateScreen(productId, action);
     })
 }
 
-function updateScreen(productId, action, needed_div) {
-    const cardItem = needed_div.closest('.card')
-    const itemPrice = parseFloat(cardItem.querySelector('.card-price-main').innerHTML)
-    console.log('price is ', itemPrice, typeof(itemPrice) )
-    // updating localStorage
-    let itemsFromCart = JSON.parse(localStorage.getItem('cart')) || {}
-
-    console.log('storage before...')
-    console.log(itemsFromCart)
-
-    if (!itemsFromCart[productId]) {
-        console.log('creating new item....')
-        itemsFromCart[productId] = {
-            'quantity': 1,
-        };
-
-    } else {
-        console.log('adding quantity....')
-        itemsFromCart[+productId]['quantity'] += 1;
-    }
-    itemsFromCart[+productId]['price'] = itemPrice
-    console.log('and now cart is', itemsFromCart)
-    localStorage.setItem('cart', JSON.stringify(itemsFromCart))
-
-
+function updateScreen(productId, action) {
     let url = '/update-cart/';
     fetch(url, {
         method: 'POST',

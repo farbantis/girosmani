@@ -1,7 +1,9 @@
+// const addToCartBtn = document.getElementsByClassName('update-cart');
+// const cancelOrderItemBtn = document.getElementsByClassName('cart_cancel');
 const addToCartBtn = document.querySelectorAll('.update-cart');
 const cancelOrderItemBtn = document.querySelectorAll('.cart_cancel');
 
-for (let i = 0; i < cancelOrderItemBtn.length; i++) {
+for (let i=0; i < cancelOrderItemBtn.length; i++) {
     cancelOrderItemBtn[i].addEventListener('click', function () {
         const productId = this.dataset.cart_cancel;
         const action = 'removeOrderItem';
@@ -10,7 +12,7 @@ for (let i = 0; i < cancelOrderItemBtn.length; i++) {
     })
 }
 
-for (let i = 0; i < addToCartBtn.length; i++) {
+for (let i=0; i < addToCartBtn.length; i++) {
     addToCartBtn[i].addEventListener('click', function () {
         // console.log(`dataset is ${this.dataset}`)
         const productId = this.dataset.product;
@@ -30,19 +32,19 @@ function updateCart(productId, action, neededDiv) {
         },
         body: JSON.stringify({'productId': productId, 'action': action})
     })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            const quantity = data.quantity;
-            const currentItemValue = data.total_item;
-            const currentOrderValue = data.grand_total;
-            const total_pcs_ordered = data.pcs_ordered;
-            // console.log('there response', quantity, total, grand_total_value)
-            // console.log('pcs ordered ')
-            updateCartPicture(total_pcs_ordered, currentOrderValue)
-            updateFrontEnd(productId, quantity, currentItemValue, currentOrderValue, neededDiv, action)
-        });
+    .then((response) => {
+        return response.json();
+    })
+          .then((data) => {
+             const quantity = data.quantity;
+             const currentItemValue = data.total_item;
+             const currentOrderValue = data.grand_total;
+             const total_pcs_ordered = data.pcs_ordered;
+             // console.log('there response', quantity, total, grand_total_value)
+             // console.log('pcs ordered ')
+             updateCartPicture(total_pcs_ordered, currentOrderValue)
+             updateFrontEnd(productId, quantity, currentItemValue, currentOrderValue, neededDiv, action)
+  });
 }
 
 
@@ -56,24 +58,21 @@ function updateCartPicture(total_pcs_ordered, currentOrderValue) {
 
 function updateFrontEnd(productId, quantity, currentItemValue, currentOrderValue, neededDiv, action) {
     // document.getElementsByClassName('order_total_figure')[0].innerHTML = grand_total
-
-    let itemsFromCart = JSON.parse(localStorage.getItem('cart')) || {}
-
-    if (action === 'remove') {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (action ==='remove') {
         const amountWrapper = neededDiv.closest('.cart_quantity');
         const counter = amountWrapper.querySelector('[data-counter]');
 
         if (counter.innerText > '1') {
             counter.innerText = --counter.innerText;
-            itemsFromCart[+productId]['quantity'] -= 1;
+
             total(neededDiv, currentItemValue, currentOrderValue)
-        } else {
+        }
+        else {
             const childWrapper = neededDiv.closest('.cart');
             childWrapper.remove()
-            console.log('removing permanently')
-            delete itemsFromCart[productId]
+            cart.removeItem(productId)
             total(neededDiv, currentItemValue, currentOrderValue)
-            location.reload()
         }
     }
 
@@ -81,33 +80,21 @@ function updateFrontEnd(productId, quantity, currentItemValue, currentOrderValue
         const amountWrapper = neededDiv.closest('.cart_quantity');
         const counter = amountWrapper.querySelector('[data-counter]');
         counter.innerText = ++counter.innerText;
-
-        // localStorage
-        itemsFromCart[+productId]['quantity'] += 1;
-
         total(neededDiv, currentItemValue, currentOrderValue)
     }
 
     if (action === 'removeOrderItem') {
         const toRemoveDiv = neededDiv.closest('.cart')
         toRemoveDiv.remove()
-
-        // localStorage
-        console.log('deleting product id', productId, 'and it is of type', typeof(productId))
-        delete itemsFromCart[productId]
         total(neededDiv, currentItemValue, currentOrderValue)
         location.reload()
     }
-
-    //save results in local storage
-    console.log(itemsFromCart)
-    localStorage.setItem('cart', JSON.stringify(itemsFromCart))
 }
 
 function total(neededDiv, currentItemValue, currentOrderValue) {
-    const cardWrapper = neededDiv.closest('.cart');
-    const currentItemValueDiv = cardWrapper.querySelector('[data-item_total]');
-    const currentOrderValueDiv = document.getElementsByClassName('order_quantity_figure')[0]
-    currentItemValueDiv.innerHTML = currentItemValue + " uah";
-    currentOrderValueDiv.innerText = currentOrderValue + " uah";
+        const cardWrapper = neededDiv.closest('.cart');
+        const currentItemValueDiv = cardWrapper.querySelector('[data-item_total]');
+        const currentOrderValueDiv = document.getElementsByClassName('order_quantity_figure')[0]
+        currentItemValueDiv.innerHTML = currentItemValue + " uah";
+        currentOrderValueDiv.innerText = currentOrderValue + " uah";
 }
