@@ -76,7 +76,6 @@
             field.type = showPassword ? "text" : "password";
         });
 
-        // If showPassword is checked, hide the confirm password field and set its value to the first password field
         if (showPassword) {
             const passwordValue = passwordFields[0].value;
             pass1.style = "display:none"
@@ -88,7 +87,6 @@
     });
 
     form.addEventListener('submit', function (e) {
-        // If showPassword is checked, reset the confirm password field type before submitting the form
         if (showPasswordCheck.checked) {
             passwordFields[1].type = "password";
         }
